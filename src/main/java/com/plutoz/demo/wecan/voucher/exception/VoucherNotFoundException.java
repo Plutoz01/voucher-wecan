@@ -1,4 +1,4 @@
-package com.plutoz.demo.wecan.voucher.service.exception;
+package com.plutoz.demo.wecan.voucher.exception;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
