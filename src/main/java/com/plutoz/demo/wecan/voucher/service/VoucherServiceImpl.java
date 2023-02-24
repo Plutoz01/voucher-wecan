@@ -9,6 +9,7 @@ import lombok.extern.java.Log;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
+import java.util.Objects;
 
 @Service
 @Transactional
@@ -28,15 +29,23 @@ public class VoucherServiceImpl implements VoucherService {
     @Override
     public Voucher create(Voucher newEntity) {
         newEntity.setId(null);
-        // TODO: voucher code unique check
+
+        if(repository.existsByCodeIgnoreCase(newEntity.getCode())) {
+            throw new VoucherIsInvalidException("Voucher code must be unique");
+        }
+
         return repository.save(newEntity);
     }
 
     @Override
     public Voucher update(Voucher updatedEntity) {
-        // TODO: voucher code unique check
         Voucher existing = repository.findById(updatedEntity.getId())
                 .orElseThrow(VoucherNotFoundException::new);
+
+        if(!Objects.equals(existing.getCode(), updatedEntity.getCode())) {
+            throw new VoucherIsInvalidException("Existing voucher's code is not modifiable");
+        }
+
         updatedEntity.setRedemptionCount(existing.getRedemptionCount());
 
         return repository.save(updatedEntity);
@@ -53,7 +62,7 @@ public class VoucherServiceImpl implements VoucherService {
                 .orElseThrow(VoucherNotFoundException::new);
 
         if (isVoucherExpired(voucher)|| isVoucherRedemptionCountExhausted(voucher)) {
-            throw new VoucherIsInvalidException();
+            throw new VoucherIsInvalidException("Voucher is expired.");
         }
 
         voucher.setRedemptionCount(voucher.getRedemptionCount() + 1);
@@ -70,7 +79,7 @@ public class VoucherServiceImpl implements VoucherService {
         if (v.getRedemptionLimit() == null) {
             return false;
         }
-        return v.getRedemptionCount() < v.getRedemptionLimit();
+        return v.getRedemptionCount() >= v.getRedemptionLimit();
     }
 
     private void handleVoucherActivation(Voucher voucher) {

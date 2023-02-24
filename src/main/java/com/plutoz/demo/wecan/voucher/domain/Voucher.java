@@ -13,7 +13,7 @@ public class Voucher {
     private Long id;
     @Column(nullable = false)
     private String name;
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false, unique = true, updatable = false)
     private String code;
     @Column
     private Instant expiry;

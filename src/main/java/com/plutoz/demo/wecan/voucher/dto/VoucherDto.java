@@ -1,22 +1,27 @@
 package com.plutoz.demo.wecan.voucher.dto;
 
-import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.NotBlank;
+import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.constraints.*;
 import lombok.Data;
 
 import java.time.Instant;
 
 @Data
+@Schema(name = "Voucher")
 public class VoucherDto {
     private Long id;
+
     @NotBlank(message = "Name is mandatory")
     private String name;
 
     @NotBlank(message = "Code is mandatory")
     private String code;
-    // TODO: additional validation needed
+
+    @Future
     private Instant expiry;
-    // TODO: need to check if this would make field mandatory or not
-    @Min(value = 0, message = "Redemption limit can not be smaller than 0")
+
+    @Positive
     private Long redemptionLimit;
+
+    private Long redemptionCount;
 }

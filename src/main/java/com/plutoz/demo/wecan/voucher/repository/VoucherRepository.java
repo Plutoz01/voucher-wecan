@@ -9,4 +9,6 @@ import java.util.Optional;
 @Repository
 public interface VoucherRepository extends CrudRepository<Voucher, Long> {
     Optional<Voucher> findByCodeIgnoreCase(String code);
+
+    boolean existsByCodeIgnoreCase(String code);
 }
