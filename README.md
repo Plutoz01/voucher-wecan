@@ -19,3 +19,20 @@ Use the following command to run tests:
 ```shell
 gradlew :check
 ```
+
+## API documentation
+See section "Getting  started" for Swagger UI.
+
+## Supported use cases
+### Optional redemption limitation
+#### Single use:
+Create a new voucher with `redemptionCount: 1`.
+
+#### X times use:
+In case of a predefined limit create a new voucher with `redemptionCount: <expected limit>`.
+
+#### Multiple (undefined / "infinite") use:
+Create a new voucher with `redemptionCount: null`.
+
+### Ability to redeem only before a certain point in time
+Use optional property `expiry` during voucher creation to set any future date-time.
