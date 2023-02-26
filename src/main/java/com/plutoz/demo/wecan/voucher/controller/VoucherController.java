@@ -12,7 +12,6 @@ import jakarta.validation.constraints.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 import java.util.Objects;
@@ -57,26 +56,28 @@ public class VoucherController {
     public VoucherDto update(@PathVariable("id") final Long id,
                              @NotNull @Valid @RequestBody final VoucherDto dto) {
         if (!Objects.equals(id, dto.getId())) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Path variable id and request body id differs");
+            throw new VoucherIsInvalidException("Identifier differs in path and request body.");
         }
         return voucherConverter.toDto(voucherService.update(voucherConverter.toModel(dto)));
     }
 
     @Operation(summary = "Deletes an existing voucher by id.")
     @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete(@NotNull @PathVariable("id") final Long id) {
         voucherService.delete(id);
     }
 
     @Operation(summary = "Redeems a voucher by code.")
     @PostMapping("/redeem")
+    @ResponseStatus(HttpStatus.OK)
     public void redeem(@NotNull @Valid @RequestBody final VoucherRedemptionDto dto) {
         this.voucherService.redeem(dto.getCode());
     }
 
     @ExceptionHandler(VoucherIsInvalidException.class)
     @ResponseStatus(value = HttpStatus.BAD_REQUEST)
-    public String handleVoucherIsInvalid(Throwable ex) {
+    private String handleVoucherIsInvalid(Throwable ex) {
         return ex.getMessage();
     }
 }
