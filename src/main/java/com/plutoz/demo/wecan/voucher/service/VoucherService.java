@@ -4,6 +4,7 @@ import com.plutoz.demo.wecan.voucher.domain.Voucher;
 
 public interface VoucherService {
     Iterable<Voucher> getAll();
+    Voucher getById(Long id);
     Voucher create(Voucher newEntity);
     Voucher update(Voucher updatedEntity);
     void delete(Long id);

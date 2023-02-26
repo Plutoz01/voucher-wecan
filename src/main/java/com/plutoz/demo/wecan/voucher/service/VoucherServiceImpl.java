@@ -27,6 +27,11 @@ public class VoucherServiceImpl implements VoucherService {
     }
 
     @Override
+    public Voucher getById(Long id) {
+        return repository.findById(id).orElseThrow(VoucherNotFoundException::new);
+    }
+
+    @Override
     public Voucher create(Voucher newEntity) {
         newEntity.setId(null);
 
