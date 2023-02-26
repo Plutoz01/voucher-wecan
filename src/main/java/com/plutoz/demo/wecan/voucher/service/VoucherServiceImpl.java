@@ -36,7 +36,7 @@ public class VoucherServiceImpl implements VoucherService {
         newEntity.setId(null);
 
         if(repository.existsByCodeIgnoreCase(newEntity.getCode())) {
-            throw new VoucherIsInvalidException("Voucher code must be unique");
+            throw new VoucherIsInvalidException("Voucher code must be unique.");
         }
 
         return repository.save(newEntity);
@@ -48,7 +48,7 @@ public class VoucherServiceImpl implements VoucherService {
                 .orElseThrow(VoucherNotFoundException::new);
 
         if(!Objects.equals(existing.getCode(), updatedEntity.getCode())) {
-            throw new VoucherIsInvalidException("Existing voucher's code is not modifiable");
+            throw new VoucherIsInvalidException("Existing voucher's code is not modifiable.");
         }
 
         updatedEntity.setRedemptionCount(existing.getRedemptionCount());
