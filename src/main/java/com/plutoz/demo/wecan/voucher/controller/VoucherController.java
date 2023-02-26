@@ -64,7 +64,7 @@ public class VoucherController {
     @Operation(summary = "Redeems a voucher by code.")
     @PostMapping("/redeem")
     public void redeem(@NotNull @Valid @RequestBody final VoucherRedemptionDto dto) {
-        this.voucherService.redeem(dto.code());
+        this.voucherService.redeem(dto.getCode());
     }
 
     @ExceptionHandler(VoucherIsInvalidException.class)
